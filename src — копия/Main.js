@@ -125,7 +125,6 @@ function Main(){
         <div>
             <div className="containerС">
                 <div>
-                    
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Yamaha_logo.svg/1280px-Yamaha_logo.svg.png" id="logoYamaha"></img>
                 </div>
                 <div id="divIconsHeader">

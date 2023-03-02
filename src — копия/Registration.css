@@ -1,0 +1,96 @@
+.mainDivReg{
+    display: flex;
+    flex-wrap: wrap;
+    width: 270px;
+    height: 400px;
+    padding: 10px;
+    margin-left:40%;
+    margin-top: 10%;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 10px 10px 50px 0px gray;
+    background-color: rgb(149, 140, 157) ;
+}
+body{
+    background-color: rgba(255, 255, 255, 0.673);
+}
+h1{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 40px;
+    margin-left: 10px;
+    color:white;
+}
+#loginReg:hover{
+    border-bottom: 5px solid rgb(124, 105, 142);
+    box-shadow: 3px 3px 20px 6px rgb(124, 105, 142);
+}
+#loginReg{
+    outline: none;
+    background-color: rgb(149, 140, 157);
+    border: none;
+    border-bottom: 1px solid  rgb(131, 115, 145);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+    height: 50px;
+    width: 200px;
+    color: white;
+}
+
+#passReg:hover{
+    border-bottom: 5px solid rgb(124, 105, 142);
+    box-shadow: 3px 3px 20px 6px rgb(124, 105, 142);
+}
+#passReg{
+    outline: none;
+    background-color: rgb(149, 140, 157);
+    border: none;
+    border-bottom: 1px solid  rgb(131, 115, 145);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+    height: 50px;
+    width: 200px;
+    color: white;
+}
+
+
+#passRepeatReg:hover{
+    border-bottom: 5px solid rgb(124, 105, 142);
+    box-shadow: 3px 3px 20px 6px rgb(124, 105, 142);
+}
+#passRepeatReg{
+    outline: none;
+    background-color: rgb(149, 140, 157);
+    border: none;
+    border-bottom: 1px solid  rgb(131, 115, 145);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+    height: 50px;
+    width: 200px;
+    color: white;
+}
+#btnSubmitReg{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:white;
+    border: 2px solid rgb(149, 140, 157) ;
+    background-color: rgb(124, 105, 142);
+    height: 40px;
+    width: 150px;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-top: 30px;
+}
+#btnSubmitReg:hover{
+    cursor: pointer;
+    box-shadow: 3px 3px 20px 6px rgb(124, 105, 142);
+    border: none;
+}
+.linkRegistration{
+    margin-top: 10px;
+    margin-left: 100px;
+}
