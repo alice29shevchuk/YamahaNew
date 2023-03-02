@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/01581e3d-3f42-49a1-9c1e-770841658dc8/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/YamahaNew",
+    "appService.deploySubpath": "."
+}
