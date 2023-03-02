@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faShoppingBasket, faBan } from '@fortawesome/fontawesome-free-solid'
+import {faHeart, faUser, faShoppingBasket, faBan } from '@fortawesome/fontawesome-free-solid'
 import { useEffect,useState } from 'react';
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
@@ -36,7 +36,7 @@ function Main(){
             //
             axios({
                 method: 'get',
-                url: 'https://localhost:7031/api/ControllerClass/GetPopularProducts',
+                url: 'https://shop20230228183528.azurewebsites.net/api/ControllerClass/GetPopularProducts',
                 dataType: "dataType",
                 headers: {
                     'Accept': '*/*',
@@ -63,7 +63,7 @@ function Main(){
         }
         axios({
             method: 'get',
-            url: 'https://localhost:7031/api/ControllerClass/GetAllCategory',
+            url: 'https://shop20230228183528.azurewebsites.net/api/ControllerClass/GetAllCategory',
             dataType: "dataType",
             headers: {
                 'Accept': '*/*',
@@ -83,7 +83,7 @@ function Main(){
                     setiteratorProuctNow(iterator['id']);
                     axios({
                         method: 'get',
-                        url: `https://localhost:7031/api/ControllerClass/GetProductsByID?id=${iterator['id']}`,
+                        url: `https://shop20230228183528.azurewebsites.net/api/ControllerClass/GetProductsByID?id=${iterator['id']}`,
                         dataType: "dataType",
                         headers: {
                             'Accept': '*/*',
@@ -123,88 +123,57 @@ function Main(){
     })
     return (
         <div>
-            <div className='headerDiv'>
-                <img className='logoImg' src="yamahawithout.png"></img>
-                <div className="input-wrapper">
-                    <button className="icon">
-                    <FontAwesomeIcon color='rgb(131, 115, 145)' icon={faShoppingBasket} />
-                    </button>
-                    <input placeholder="Search.." className="input" name="text" type="text"></input>
-                    <button className='searchButton' onClick={()=>{
-                    axios({
-                        method: 'get',
-                        url: `https://localhost:7031/api/ControllerClass/SearchProduct?text=${document.getElementById('searchInput').value}`,
-                        dataType: "dataType",
-                        headers: {
-                            'Accept': '*/*',
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(product => {
-                        console.log(document.getElementById('searchInput').value);
-                        var cardsDiv = document.getElementById('cardsDiv');
-                        cardsDiv.innerHTML='';
-                        for (const iter of product['data']['value']) {
-                            if(iter['status'] === 'Enabled'){
-                                var card = document.createElement('div');
-                                card.className="cards";
-                                var title = document.createElement('h2');
-                                title.textContent = iter['title'] + ' ' + iter['model'];
-                                title.className="titleProduct";
-                                var picture = document.createElement('img');
-                                picture.src = iter['uriPhoto'];
-                                picture.className="pictureCard";
-                                var price = document.createElement('h3');
-                                price.textContent = iter['price']+' грн.';
-                                var buy = document.createElement('button');
-                                buy.textContent = "BUY";
-                                buy.className="btnBuy";
-                                card.append(picture);
-                                card.append(title);
-                                card.append(price);
-                                card.append(buy);
-                                cardsDiv.append(card);
-                            }
-                        }
-                    });
-                }}>Search</button>
+            <div className="containerС">
+                <div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Yamaha_logo.svg/1280px-Yamaha_logo.svg.png" id="logoYamaha"></img>
                 </div>
-                {/* <input id='searchInput' type="search" placeholder='Search...'></input> */}
-                
-                <FontAwesomeIcon className='iconBasket' color='rgb(131, 115, 145)' icon={faShoppingBasket} />
-                <FontAwesomeIcon className='iconAuthorize' color='rgb(131, 115, 145)' icon={faUser} onClick={()=>{
-                    window.location.href='/authorization';
-                }} />
+                <div id="divIconsHeader">
+                    <input placeholder='Search...' className='searchInput' type="text"></input>
+                    <FontAwesomeIcon className='iconsHeader' id="likeIcon" icon={faHeart} color="#5d16a2" />
+                    <FontAwesomeIcon className='iconsHeader' icon={faShoppingBasket} color="#5d16a2" />
+                    <FontAwesomeIcon className='iconsHeader' icon={faUser} color="#5d16a2" onClick={()=>{
+                        window.location.href='/authorization';
+                    }} />
+                </div>
             </div>
-            <Carousel autoPlay='true' infiniteLoop='true' renderArrowPrev={(clickHandler, hasPrev) => {
-                return (
-                    <div
-                        className={`${hasPrev ? "absolute" : "hidden"
-                            } top-0 bottom-0 left-0 flex justify-center items-center p-3 opacity-30 hover:opacity-100 cursor-pointer z-20`}
-                        onClick={clickHandler}
-                    >
-                    </div>
-                );
-            }}
-                renderArrowNext={(clickHandler, hasNext) => {
+            <div>
+                <Carousel autoPlay='true' infiniteLoop='true' renderArrowPrev={(clickHandler, hasPrev) => {
                     return (
                         <div
-                            className={`${hasNext ? "absolute" : "hidden"
-                                } top-0 bottom-0 right-0 flex justify-center items-center p-3 opacity-30 hover:opacity-100 cursor-pointer z-20`}
+                            className={`${hasPrev ? "absolute" : "hidden"
+                                } top-0 bottom-0 left-0 flex justify-center items-center p-3 opacity-30 hover:opacity-100 cursor-pointer z-20`}
                             onClick={clickHandler}
                         >
                         </div>
                     );
-                }}>
-                <div>
-                    <img src="https://yellow.ua/media/adminforms/homepage_slider_banners/1/3/x1300_3.png.pagespeed.ic._UU75rc8Sk.webp" />
+                }}
+                    renderArrowNext={(clickHandler, hasNext) => {
+                        return (
+                            <div
+                                className={`${hasNext ? "absolute" : "hidden"
+                                    } top-0 bottom-0 right-0 flex justify-center items-center p-3 opacity-30 hover:opacity-100 cursor-pointer z-20`}
+                                onClick={clickHandler}
+                            >
+                            </div>
+                        );
+                    }}>
+                    <div>
+                        <img src="https://yellow.ua/media/adminforms/homepage_slider_banners/1/3/x1300_3.png.pagespeed.ic._UU75rc8Sk.webp" />
+                    </div>
+                    <div>
+                        <img src="https://yellow.ua/media/adminforms/homepage_slider_banners/a/r/xartboard_1_16.png.pagespeed.ic._61jKyeonI.webp" />
+                    </div>
+                    <div>
+                        <img src="https://yellow.ua/media/specialaction/image/a/r/artboard_1_5.png" />
+                    </div>
+                </Carousel>
+            </div>
+            <h1 id="contentPopularProducts">Popular products</h1>
+            <div class="containerPopular">
+                <div class="card_box">
+                    <span></span>
                 </div>
-                <div>
-                    <img src="https://yellow.ua/media/adminforms/homepage_slider_banners/a/r/xartboard_1_16.png.pagespeed.ic._61jKyeonI.webp" />
-                </div>
-                <div>
-                    <img src="https://yellow.ua/media/specialaction/image/a/r/artboard_1_5.png" />
-                </div>
-            </Carousel>
+            </div>
             <div className='menu'></div>
             <div id='showBlockDiv'>
                 <div id='sortDiv'>
@@ -234,7 +203,7 @@ function Main(){
                         console.log(iteratorProuctNow);
                         axios({
                             method: 'get',
-                            url: `https://localhost:7031/api/ControllerClass/GetProductsByID?id=${iteratorProuctNow}`,
+                            url: `https://shop20230228183528.azurewebsites.net/api/ControllerClass/GetProductsByID?id=${iteratorProuctNow}`,
                             dataType: "dataType",
                             headers: {
                                 'Accept': '*/*',

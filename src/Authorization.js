@@ -11,7 +11,7 @@ function Authorization(){
             <button id='btnSubmitAuthorization' onClick={() => {
                 axios({
                     method: 'post',
-                    url: 'https://localhost:7031/api/Authentication/Login',
+                    url: 'https://shop20230228183528.azurewebsites.net/api/Authentication/Login',
                     data: {
                         "userName": document.getElementById('login').value,
                         "password": document.getElementById('pass').value

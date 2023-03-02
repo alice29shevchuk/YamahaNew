@@ -13,7 +13,7 @@ function Registration(){
             <button id='btnSubmitReg' onClick={() => {
                 axios({
                     method: 'post',
-                    url: 'https://localhost:7031/api/Authentication/regUser',
+                    url: 'https://shop20230228183528.azurewebsites.net/api/Authentication/regUser',
                     data: {
                         "userName": document.getElementById('loginReg').value,
                         "password": document.getElementById('passReg').value,
