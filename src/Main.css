@@ -145,7 +145,8 @@ meter {
     color: red;
   }
 
-  .containerPopular {
+  #containerPopular {
+    /* width: 100vw; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -159,12 +160,16 @@ meter {
   .card_box {
     width: 250px;
     height: 300px;
+    margin: 60px;
     border-radius: 20px;
     background: linear-gradient(170deg, white 0%,#481677  100%);
     position: relative;
     box-shadow: 0 25px 50px rgba(0,0,0,0.55);
     cursor: pointer;
     transition: all .3s;
+    text-align: center;
+    color: white;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
   }
   
   .card_box:hover {
@@ -293,9 +298,11 @@ ul{
 }
 .cards:hover{
     cursor: pointer;
+    transition: 0.4s all;
     transform: scale(1.1); 
 }
 .btnBuy{
+    text-align: center;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color:white;
     border: 2px solid rgb(149, 140, 157) ;
@@ -312,6 +319,7 @@ ul{
     border: none;
 }
 .SortMoneyButton{
+    text-align: center;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color:white;
     border: 2px solid rgb(149, 140, 157) ;
@@ -389,9 +397,9 @@ i:hover{
 }
 .picturePopularCard{
     margin-top: 32px;
-    margin-left: 60px;
-    width: 200px;
-    height: 220px;
+    /* margin-left: 60px; */
+    width: 170px;
+    height: 180px;
     border-radius: 20px;
 }
 .popularCards:hover{
@@ -505,9 +513,39 @@ i:hover{
     visibility:visible;
     
   }
-  /* .icon:focus + .searchButton {
-        visibility:visible;
-  } */
+  
+  .btnEnabled{
+    background-color: rgb(207, 207, 207);
+    text-align: center;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:white;
+    height: 40px;
+    width: 150px;
+    border-radius: 10px;
+    margin-left: 70px;
+    margin-top: 20px;
+  }
+  .basketCard{
+    background-color: white;
+    padding: 20px;
+    box-shadow: 3px 3px 20px 6px rgb(124, 105, 142);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .titleBasketProduct{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    padding-left: 20px;
+    padding-bottom: 10px;
+  }
+  .pictureBasketCard{
+    width: 150px;
+    height: 150px;
+  }
+  .priceBasket{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    padding-left: 20px;
+    padding-top: 10px;
+  }
 
 
   

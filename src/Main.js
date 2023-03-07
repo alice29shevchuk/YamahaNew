@@ -1,35 +1,40 @@
 import axios, { Axios } from 'axios';
 import './Main.css';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faHeart, faUser, faShoppingBasket, faBan } from '@fortawesome/fontawesome-free-solid'
-import { useEffect,useState } from 'react';
+import { faHeart, faUser, faShoppingBasket, faBan } from '@fortawesome/fontawesome-free-solid'
+import { useCallback, useEffect, useState } from 'react';
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
 import MultiRangeSlider from "multi-range-slider-react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import * as Scroll from 'react-scroll';
-import {Button, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
-function Main(){
-    let scroll    = Scroll.animateScroll;
+import { Button, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
+import Modal from './Modal';
+function Main() {
+    let scroll = Scroll.animateScroll;
     function ToTop() {
         scroll.scrollToTop();
-      };
+    };
+    const [modalActive,setModalActive] = useState(false);
     const [popProduct, setPopProduct] = useState(false);
     const [minValue, set_minValue] = useState(13499);
     const [maxValue, set_maxValue] = useState(81689);
     const handleInput = (e) => {
-	    set_minValue(e.minValue);
-	    set_maxValue(e.maxValue);
+        set_minValue(e.minValue);
+        set_maxValue(e.maxValue);
     };
-    const[iteratorProuctNow,setiteratorProuctNow] = useState(-1);
-    useEffect(()=>{
-        if(popProduct===false)
-        {
+    const [iteratorProuctNow, setiteratorProuctNow] = useState(-1);
+    const [countBasketProduct,setCountBasketProduct] = useState(0);
+    // useEffect(()=>{
+    //     console.log(countBasketProduct);
+    // },[countBasketProduct]);
+    useEffect(() => {
+        if (popProduct === false) {
             setPopProduct(true);
             //
             //  popular products
@@ -43,20 +48,22 @@ function Main(){
                     'Content-Type': 'application/json'
                 }
             }).then(popular => {
-                var cardsDiv = document.getElementById('cardsDiv');
-                cardsDiv.innerHTML = '';
+                var cardsPopular = document.getElementById('containerPopular');
                 for (const itPop of popular['data']['value']) {
+                    console.log(itPop);
                     if (itPop['status'] === 'Enabled') {
-                        var divPopCards = document.createElement('div');
-                        divPopCards.className = "popularCards";
+                        var divPopular = document.createElement('div');
+                        divPopular.className = "card_box";
+                        var spanPopular = document.createElement('span');
                         var picturePopular = document.createElement('img');
                         picturePopular.src = itPop['uriPhoto'];
                         picturePopular.className = "picturePopularCard";
                         var titlePopular = document.createElement('h2');
                         titlePopular.textContent = itPop['title'] + ' ' + itPop['model'];
-                        divPopCards.append(titlePopular);
-                        divPopCards.append(picturePopular);
-                        cardsDiv.append(divPopCards);
+                        divPopular.append(spanPopular);
+                        divPopular.append(picturePopular);
+                        divPopular.append(titlePopular);
+                        cardsPopular.append(divPopular);
                     }
                 }
             });
@@ -74,12 +81,12 @@ function Main(){
             var nav = document.createElement('nav');
             var ul = document.createElement('ul');
             nav.append(ul);
-            menuDiv[0].innerHTML='';
+            menuDiv[0].innerHTML = '';
             for (const iterator of data['data']['value']) {
                 var li = document.createElement('li');
                 li.textContent = iterator['title'];
-                li.className="menuCategory";
-                li.addEventListener('click',()=>{
+                li.className = "menuCategory";
+                li.addEventListener('click', () => {
                     setiteratorProuctNow(iterator['id']);
                     axios({
                         method: 'get',
@@ -91,22 +98,59 @@ function Main(){
                         }
                     }).then(product => {
                         var cardsDiv = document.getElementById('cardsDiv');
-                        cardsDiv.innerHTML='';
+                        cardsDiv.innerHTML = '';
                         for (const iter of product['data']['value']) {
-                            if(iter['status'] === 'Enabled'){
+                            if (iter['status'] === 'Enabled') {
                                 var card = document.createElement('div');
-                                card.className="cards";
+                                card.className = "cards";
                                 var title = document.createElement('h2');
                                 title.textContent = iter['title'] + ' ' + iter['model'];
-                                title.className="titleProduct";
+                                title.className = "titleProduct";
                                 var picture = document.createElement('img');
                                 picture.src = iter['uriPhoto'];
-                                picture.className="pictureCard";
+                                picture.className = "pictureCard";
                                 var price = document.createElement('h3');
-                                price.textContent = iter['price']+' грн.';
+                                price.textContent = iter['price'] + ' грн.';
                                 var buy = document.createElement('button');
                                 buy.textContent = "BUY";
-                                buy.className="btnBuy";
+                                buy.className = "btnBuy";
+                                buy.id = iter['id'];
+                                buy.addEventListener('click',()=>{
+                                    // setCountBasketProduct(countBasketProduct + 1);
+                                    alert('Товар добавлен в корзину!');
+                                    // setCountBasketProduct(countBasketProduct + 1);
+                                    //// 
+                                    ////
+                                    var basketDiv = document.getElementById('basketCardsDiv');
+                                    var basketCard = document.createElement('div');
+                                    basketCard.className="basketCard";
+                                    var titleBasket = document.createElement('h2');
+                                    titleBasket.textContent = iter['title'] + ' ' + iter['model'];
+                                    titleBasket.className = "titleBasketProduct";
+                                    var pictureBasket = document.createElement('img');
+                                    pictureBasket.src = iter['uriPhoto'];
+                                    pictureBasket.className = "pictureBasketCard";
+                                    var priceBasket = document.createElement('h3');
+                                    priceBasket.textContent = 'Цена: ' + iter['price'] + ' грн';
+                                    priceBasket.className = "priceBasket";
+
+                                    var isEmptyBasketTextContent = document.getElementById('isEmptyBasket');
+                                    isEmptyBasketTextContent.innerHTML='';
+                                    basketCard.append(titleBasket);
+                                    basketCard.append(pictureBasket);
+                                    basketCard.append(priceBasket);
+                                    basketDiv.append(basketCard);
+                                    var arrCardsBasket = document.getElementsByClassName('basketCard');
+                                    console.log(arrCardsBasket.length);
+                                    setCountBasketProduct(arrCardsBasket.length);
+                                    var listBuyButton = document.getElementsByClassName('btnBuy');
+                                    for (const btn of listBuyButton) {
+                                        if (btn.id == iter['id']) {
+                                            btn.disabled = true;
+                                            btn.setAttribute('class','btnEnabled');
+                                        }
+                                    }
+                                })
                                 card.append(picture);
                                 card.append(title);
                                 card.append(price);
@@ -125,15 +169,22 @@ function Main(){
         <div>
             <div className="containerС">
                 <div>
-                    
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Yamaha_logo.svg/1280px-Yamaha_logo.svg.png" id="logoYamaha"></img>
                 </div>
                 <div id="divIconsHeader">
+                    <Modal active={modalActive} setActive={setModalActive}>
+                        <h1 style={{color:"#7e4fd4"}}>Корзина</h1>
+                        <h4 style={{marginLeft:"11px"}} id='isEmptyBasket'>В данный момент корзина пуста...</h4>
+                        <div id='basketCardsDiv'></div>
+                    </Modal>
                     <input placeholder='Search...' className='searchInput' type="text"></input>
                     <FontAwesomeIcon className='iconsHeader' id="likeIcon" icon={faHeart} color="#5d16a2" />
-                    <FontAwesomeIcon className='iconsHeader' icon={faShoppingBasket} color="#5d16a2" />
-                    <FontAwesomeIcon className='iconsHeader' icon={faUser} color="#5d16a2" onClick={()=>{
-                        window.location.href='/authorization';
+                    <h1 style={{color:"red"}}>{countBasketProduct}</h1>
+                    <FontAwesomeIcon className='iconsHeader' icon={faShoppingBasket} color="#5d16a2" onClick={() => {
+                        setModalActive(true);
+                    }} />
+                    <FontAwesomeIcon className='iconsHeader' icon={faUser} color="#5d16a2" onClick={() => {
+                        window.location.href = '/authorization';
                     }} />
                 </div>
             </div>
@@ -170,16 +221,12 @@ function Main(){
                 </Carousel>
             </div>
             <h1 id="contentPopularProducts">Popular products</h1>
-            <div class="containerPopular">
-                <div class="card_box">
-                    <span></span>
-                </div>
-            </div>
+            <div id="containerPopular"></div>
             <div className='menu'></div>
             <div id='showBlockDiv'>
                 <div id='sortDiv'>
                     <h2>Фильтры</h2>
-                    <p style={{borderBottom:'2px solid gray', marginLeft:'-10px',marginRight:'-10px'}}></p>
+                    <p style={{ borderBottom: '2px solid gray', marginLeft: '-10px', marginRight: '-10px' }}></p>
                     <h5>Цена</h5>
                     <MultiRangeSlider
                         min={13499}
@@ -198,9 +245,9 @@ function Main(){
                             handleInput(e);
                         }}
                     />
-					<div style={{ margin: '10px' }}>От: {minValue} грн.</div>
+                    <div style={{ margin: '10px' }}>От: {minValue} грн.</div>
                     <div style={{ margin: '10px' }}>До: {maxValue} грн.</div>
-                    <button className='SortMoneyButton' onClick={()=>{
+                    <button className='SortMoneyButton' onClick={() => {
                         console.log(iteratorProuctNow);
                         axios({
                             method: 'get',
@@ -212,27 +259,26 @@ function Main(){
                             }
                         }).then(sortMoney => {
                             var cardsDiv = document.getElementById('cardsDiv');
-                            cardsDiv.innerHTML='';
-                            console.log({minValue});
-                            console.log({maxValue});
+                            cardsDiv.innerHTML = '';
+                            console.log({ minValue });
+                            console.log({ maxValue });
                             for (const iterSort of sortMoney['data']['value']) {
-                                if(iterSort['status'] === 'Enabled'){
-                                    if(iterSort['price']<=maxValue && iterSort['price']>=minValue)
-                                    {
+                                if (iterSort['status'] === 'Enabled') {
+                                    if (iterSort['price'] <= maxValue && iterSort['price'] >= minValue) {
                                         console.log('yts');
                                         var card = document.createElement('div');
-                                        card.className="cards";
+                                        card.className = "cards";
                                         var title = document.createElement('h2');
                                         title.textContent = iterSort['title'] + ' ' + iterSort['model'];
-                                        title.className="titleProduct";
+                                        title.className = "titleProduct";
                                         var picture = document.createElement('img');
                                         picture.src = iterSort['uriPhoto'];
-                                        picture.className="pictureCard";
+                                        picture.className = "pictureCard";
                                         var price = document.createElement('h3');
-                                        price.textContent = iterSort['price']+' грн.';
+                                        price.textContent = iterSort['price'] + ' грн.';
                                         var buy = document.createElement('button');
                                         buy.textContent = "BUY";
-                                        buy.className="btnBuy";
+                                        buy.className = "btnBuy";
                                         card.append(picture);
                                         card.append(title);
                                         card.append(price);
@@ -247,7 +293,7 @@ function Main(){
                 <div id='cardsDiv'></div>
             </div>
             <footer className='footer'>
-                <div style={{display:'flex'}}>
+                <div style={{ display: 'flex' }}>
                     <div>
                         <img className='logoImgFooter' src="yamahawithout.png"></img>
                         <ul className='phoneNumbers'>
@@ -266,7 +312,7 @@ function Main(){
                         <p style={{ marginTop: '70px', marginLeft: '50px' }}>© Yamaha 2023 - Интернет-магазин техники Днепр, Киев, Украина</p>
                     </div>
                     <div>
-                        <h5 style={{marginTop:'40px'}}>Покупателю</h5>
+                        <h5 style={{ marginTop: '40px' }}>Покупателю</h5>
                         <ul className='infoUl'>
                             <li className='info'>Карта сайта</li>
                             <li className='info'>Пользовательское соглашение</li>
@@ -275,16 +321,16 @@ function Main(){
                         </ul>
                     </div>
                     <div>
-                        <h5 style={{marginTop:'40px',marginLeft:'180px'}}>Ждем Вас</h5>
-                        <h6 style={{marginTop:'40px',marginLeft:'180px'}}>г. Днепр</h6>
-                        <p style={{marginLeft:'180px'}}>проспект Д. Яворницкого, 34</p>
+                        <h5 style={{ marginTop: '40px', marginLeft: '180px' }}>Ждем Вас</h5>
+                        <h6 style={{ marginTop: '40px', marginLeft: '180px' }}>г. Днепр</h6>
+                        <p style={{ marginLeft: '180px' }}>проспект Д. Яворницкого, 34</p>
 
-                        <h6 style={{marginLeft:'180px'}}>г. Киев</h6>
-                        <p style={{marginLeft:'180px'}}>ул.Жилянская 53, 1 этаж, Шоу-рум «Yellow» (м.Вокзальная)</p>
+                        <h6 style={{ marginLeft: '180px' }}>г. Киев</h6>
+                        <p style={{ marginLeft: '180px' }}>ул.Жилянская 53, 1 этаж, Шоу-рум «Yellow» (м.Вокзальная)</p>
                     </div>
                 </div>
-                <button onClick={()=>ToTop()} className="btnToTop">
-                    <i className="fa fa-chevron-up" style={{marginLeft:'22px'}} aria-hidden="true"></i>
+                <button onClick={() => ToTop()} className="btnToTop">
+                    <i className="fa fa-chevron-up" style={{ marginLeft: '22px' }} aria-hidden="true"></i>
                 </button>
             </footer>
         </div>
