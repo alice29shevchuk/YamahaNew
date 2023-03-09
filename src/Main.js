@@ -6,7 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faUser, faShoppingBasket, faBan } from '@fortawesome/fontawesome-free-solid'
-import { useCallback, useEffect, useState } from 'react';
+import { createElement, useCallback, useEffect, useState } from 'react';
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
 import MultiRangeSlider from "multi-range-slider-react";
@@ -17,6 +17,7 @@ import { Button, Element, Events, animateScroll as scroll, scrollSpy, scroller }
 import Modal from './Modal';
 function Main() {
     let scroll = Scroll.animateScroll;
+    var tempPrice = 0;
     function ToTop() {
         scroll.scrollToTop();
     };
@@ -24,12 +25,17 @@ function Main() {
     const [popProduct, setPopProduct] = useState(false);
     const [minValue, set_minValue] = useState(13499);
     const [maxValue, set_maxValue] = useState(81689);
+    const[amount,setAmount] = useState(0);
+    const[totalPriceBasket,setTotalPriceBasket] = useState(0);
     const handleInput = (e) => {
         set_minValue(e.minValue);
         set_maxValue(e.maxValue);
     };
     const [iteratorProuctNow, setiteratorProuctNow] = useState(-1);
     const [countBasketProduct,setCountBasketProduct] = useState(0);
+    // useEffect(()=>{
+    //     console.log(totalPriceBasket);
+    // });
     // useEffect(()=>{
     //     console.log(countBasketProduct);
     // },[countBasketProduct]);
@@ -118,10 +124,9 @@ function Main() {
                                 buy.addEventListener('click',()=>{
                                     // setCountBasketProduct(countBasketProduct + 1);
                                     alert('Товар добавлен в корзину!');
-                                    // setCountBasketProduct(countBasketProduct + 1);
-                                    //// 
-                                    ////
+                                    scroll.scrollToTop();
                                     var basketDiv = document.getElementById('basketCardsDiv');
+
                                     var basketCard = document.createElement('div');
                                     basketCard.className="basketCard";
                                     var titleBasket = document.createElement('h2');
@@ -130,19 +135,66 @@ function Main() {
                                     var pictureBasket = document.createElement('img');
                                     pictureBasket.src = iter['uriPhoto'];
                                     pictureBasket.className = "pictureBasketCard";
+                                    pictureBasket.id = iter['price'];
+                                    var input = document.createElement('input');
+                                    input.type="number";
+                                    input.value = "1";
+                                    input.min=1;
+                                    input.max = iter['amount'];
+                                    input.className="amountOfProduct";
+                                    input.id = iter['id'];
                                     var priceBasket = document.createElement('h3');
-                                    priceBasket.textContent = 'Цена: ' + iter['price'] + ' грн';
+                                    priceBasket.innerHTML=`<span>Цена: </span> ${iter['price']} <span> грн.</span>` ;
+                                    priceBasket.value = iter['price'];
                                     priceBasket.className = "priceBasket";
+                                    priceBasket.id = iter['id'];
+                                    var i = document.createElement('i');
+                                    i.className="fa fa-trash";
+                                    i.id = "trashIcon";
+                                    var p = document.createElement('p');
+                                    p.textContent="Кол-во товара:";
+                                    p.className="textAmountProduct";
 
+                                    //надпись корзина пуста исчезает
                                     var isEmptyBasketTextContent = document.getElementById('isEmptyBasket');
                                     isEmptyBasketTextContent.innerHTML='';
+                                    //надпись итоговая сумма появляется
+                                    var isTotalSumm = document.getElementById('isTotalSumm');
+                                    isTotalSumm.style.visibility = 'visible';
+                                   
+                                    basketCard.append(i);
+                                    basketCard.append(p);
+                                    basketCard.append(input);
                                     basketCard.append(titleBasket);
                                     basketCard.append(pictureBasket);
                                     basketCard.append(priceBasket);
                                     basketDiv.append(basketCard);
+
+
                                     var arrCardsBasket = document.getElementsByClassName('basketCard');
-                                    console.log(arrCardsBasket.length);
                                     setCountBasketProduct(arrCardsBasket.length);
+                                    var listPriceBasket = document.getElementsByClassName('priceBasket');
+                                    var imgList = document.getElementsByClassName('pictureBasketCard');
+                                    tempPrice = 0;
+                                    for (const itTotal of listPriceBasket) {
+                                        console.log(itTotal);
+                                        tempPrice = tempPrice + parseInt(itTotal.value);
+                                    }
+                                    setTotalPriceBasket(tempPrice);
+                                    input.addEventListener('change',()=>{
+                                        tempPrice = 0;
+                                        for (let i = 0; i < arrCardsBasket.length; i++) {
+                                            if(input.id == listPriceBasket[i].id){
+                                                listPriceBasket[i].innerHTML = `<span>Цена: </span> ${imgList[i].id * input.value} <span> грн.</span>` ;
+                                                listPriceBasket[i].value = imgList[i].id * input.value;
+                                            }
+                                            tempPrice = tempPrice + parseInt(listPriceBasket[i].value);
+                                        }
+                                        setTotalPriceBasket(tempPrice);
+                                    });
+
+                                    
+
                                     var listBuyButton = document.getElementsByClassName('btnBuy');
                                     for (const btn of listBuyButton) {
                                         if (btn.id == iter['id']) {
@@ -176,13 +228,17 @@ function Main() {
                         <h1 style={{color:"#7e4fd4"}}>Корзина</h1>
                         <h4 style={{marginLeft:"11px"}} id='isEmptyBasket'>В данный момент корзина пуста...</h4>
                         <div id='basketCardsDiv'></div>
+                        <h3 id='isTotalSumm'>Итого: {totalPriceBasket} грн.</h3>
                     </Modal>
+                    <i className="fa fa-search" id='searchIconID' aria-hidden="true"></i>
                     <input placeholder='Search...' className='searchInput' type="text"></input>
+                    {/* <input placeholder='Search...' className='searchInput' type="text"></input> */}
                     <FontAwesomeIcon className='iconsHeader' id="likeIcon" icon={faHeart} color="#5d16a2" />
-                    <h1 style={{color:"red"}}>{countBasketProduct}</h1>
-                    <FontAwesomeIcon className='iconsHeader' icon={faShoppingBasket} color="#5d16a2" onClick={() => {
-                        setModalActive(true);
-                    }} />
+                    <FontAwesomeIcon id='shopBasket' icon={faShoppingBasket} color="#5d16a2" onClick={() => {
+                            setModalActive(true);
+                        }} />
+                    <span class="p1 fa-stack fa-2x has-badge" data-count={countBasketProduct}>
+                    </span>
                     <FontAwesomeIcon className='iconsHeader' icon={faUser} color="#5d16a2" onClick={() => {
                         window.location.href = '/authorization';
                     }} />
@@ -330,7 +386,7 @@ function Main() {
                     </div>
                 </div>
                 <button onClick={() => ToTop()} className="btnToTop">
-                    <i className="fa fa-chevron-up" style={{ marginLeft: '22px' }} aria-hidden="true"></i>
+                    <i className="fa fa-chevron-up" style={{ marginLeft: '33px' }} aria-hidden="true"></i>
                 </button>
             </footer>
         </div>

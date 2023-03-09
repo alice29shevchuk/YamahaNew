@@ -110,7 +110,7 @@ meter {
   #divIconsHeader{
     margin: 40px;
   }
-  .searchInput{
+  /* .searchInput{
     width: 500px;
     height: 50px;
     outline: none;
@@ -131,7 +131,7 @@ meter {
   .searchInput:hover{
     box-shadow: 3px 3px 3px #481677;
     cursor: pointer;
-  }
+  } */
   .iconsHeader{
     width: 40px;
     height: 30px;
@@ -140,6 +140,9 @@ meter {
   .iconsHeader:hover{
     cursor: pointer;
     color: #481677;
+  }
+  #likeIcon{
+    margin-left: 40px;
   }
   #likeIcon:hover{
     color: red;
@@ -546,6 +549,95 @@ i:hover{
     padding-left: 20px;
     padding-top: 10px;
   }
+  .p1[data-count]:after{
+    position:absolute;
+    width: 10px;
+    content: attr(data-count);
+    font-size:50%;
+    padding:.2em;
+    border-radius:50%;
+    line-height:1em;
+    color: #481677;
+    /* background:rgba(183, 0, 255, 0.85); */
+    text-align:center;
+    min-width: 1em;
+    font-weight:bold;
+  }
+  #shopBasket{
+    margin-left: 30px;
+    width: 40px;
+    height: 30px;
+    padding-top: -20px;
+  }
+  #shopBasket:hover{
+    cursor: pointer;
+    color: #481677;
+  }
+  #trashIcon{
+    position: relative;
+    float: right;
+    font-size: 24px;
+   }
+   .amountOfProduct::-webkit-inner-spin-button { 
+    opacity: 1;
+   }
+   .amountOfProduct{
+    width: 50px;
+    position: absolute;
+    float: right;
+    margin-top: 110px;
+    margin-left: 450px;
+    font-size: 20px;
+    color: #481677;
+    text-align: center;
+  }
+  .textAmountProduct{
+    font-size: 20px;
+    color: #481677;
+    position: absolute;
+    float: right;
+    margin-top: 110px;
+    margin-left: 300px;
+  }
+  .searchInput {
+    width: 500px;
+    height: 50px;
+    outline: none;
+    border: 2px solid #481677;
+    border-radius: 30px;
+    background-size: 30px;
+    color: #8f8f8f;
+    font-size: 20px;
+    padding: 10px;
+  }
+  .searchInput::placeholder {
+    color: #8f8f8f;
+    font-size: 20px;
+    padding: 10px;
+  }
+  .searchInput:hover{
+    box-shadow: 3px 3px 3px #481677;
+    cursor: pointer;
+  }
+  
+  #searchIconID {
+    font-size: 24px;
+    line-height: 26px;
+    text-align: center;
+    margin-left: 450px;
+    margin-top: 13px;
+    position: absolute;
+    z-index: 1;
+    float: left;
+  }
+
+  #searchIconID:hover {
+    color: #5d16a2;
+  }
+  #isTotalSumm{
+    visibility: hidden;
+  }
+
 
 
   
