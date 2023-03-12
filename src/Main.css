@@ -637,6 +637,9 @@ i:hover{
   #isTotalSumm{
     visibility: hidden;
   }
+  .summaHidden{
+    visibility: hidden;
+  }
 
 
 
