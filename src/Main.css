@@ -640,7 +640,11 @@ i:hover{
   .summaHidden{
     visibility: hidden;
   }
-
+  #paginator{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
 
   
