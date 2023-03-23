@@ -58,164 +58,43 @@ function Main() {
     //Пагинация
     //
     const[posts,setPosts] = useState([]);
+    // const posts = [];
     const[loading,setLoading] = useState(false);
     const[currentPage,setCurrentPage] = useState(1);
     const[postsPerPage] = useState(3);
     const indexOfLastPost = currentPage*postsPerPage;
     const indexOfFirstPost = indexOfLastPost-postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost,indexOfLastPost);
+    const [currentPosts,setCurrentPosts] = useState([]);
+    // var currentPosts = posts.slice(indexOfFirstPost,indexOfLastPost);
     const paginate = pageNumber => setCurrentPage(pageNumber);
-
+   
     useEffect(() => {
         axios({
             method: 'get',
             url: 'https://marketuser.azurewebsites.net/api/ControllerClass/GetAllProduct',
-            dataType: "dataType",
+            
             headers: {
                 'Accept': '*/*',
                 'Content-Type': 'application/json'
             }
-        }).then(allproduct => {
-            //если enabled!!!!
-            setPosts(allproduct['data']['value']);
-            setLoading(false);
-            console.log(posts);
-                                            //КАРТОЧКИ (СОЗДАНИЕ И КЛИК)
-
-            // var cardsDiv = document.getElementById('cardsDiv');
-            // cardsDiv.innerHTML = '';
-            // for (const iter of allproduct['data']['value']) {
-            //     if (iter['status'] === 'Enabled') {
-            //         var card = document.createElement('div');
-            //         card.className = "cards";
-            //         var title = document.createElement('h2');
-            //         title.textContent = iter['title'] + ' ' + iter['model'];
-            //         title.className = "titleProduct";
-            //         var picture = document.createElement('img');
-            //         picture.src = iter['uriPhoto'];
-            //         picture.className = "pictureCard";
-            //         var price = document.createElement('h3');
-            //         price.textContent = iter['price'] + ' грн.';
-            //         var buy = document.createElement('button');
-            //         buy.textContent = "BUY";
-            //         buy.className = "btnBuy";
-            //         buy.id = iter['id'];
-            //         buy.addEventListener('click', () => {
-            //             var IStoken = sessionStorage.getItem("token");
-            //             if (IStoken == null) {
-            //                 window.location.href = '/authorization';
-            //             }
-            //             else {
-
-            //             }
-            //             // setCountBasketProduct(countBasketProduct + 1);
-            //             alert('Товар добавлен в корзину!');
-            //             scroll.scrollToTop();
-            //             //надпись корзина пуста исчезает
-            //             var isEmptyBasketTextContent = document.getElementById('isEmptyBasket');
-            //             isEmptyBasketTextContent.innerHTML = '';
-            //             var totalSumma = document.getElementById('isTotalSumm');
-            //             var basketDiv = document.getElementById('basketCardsDiv');
-            //             var basketCard = document.createElement('div');
-            //             basketCard.className = "basketCard";
-            //             basketCard.id = iter['id'];
-            //             var arrCardsBasket = document.getElementsByClassName('basketCard');
-            //             var titleBasket = document.createElement('h2');
-            //             titleBasket.textContent = iter['title'] + ' ' + iter['model'];
-            //             titleBasket.className = "titleBasketProduct";
-            //             var pictureBasket = document.createElement('img');
-            //             pictureBasket.src = iter['uriPhoto'];
-            //             pictureBasket.className = "pictureBasketCard";
-            //             pictureBasket.id = iter['price'];
-            //             var input = document.createElement('input');
-            //             input.type = "number";
-            //             input.value = "1";
-            //             input.min = 1;
-            //             input.max = iter['amount'];
-            //             input.className = "amountOfProduct";
-            //             input.id = iter['id'];
-            //             var priceBasket = document.createElement('h3');
-            //             priceBasket.innerHTML = `<span>Цена: </span> ${iter['price']} <span> грн.</span>`;
-            //             priceBasket.value = iter['price'];
-            //             priceBasket.className = "priceBasket";
-            //             priceBasket.id = iter['id'];
-            //             var i = document.createElement('i');
-            //             i.className = "fa fa-trash";
-            //             i.id = "trashIcon";
-            //             i.addEventListener('click', () => {
-            //                 alert('del');
-            //                 console.log(basketCard.id);
-            //                 basketDiv.removeChild(basketCard);
-            //                 if (arrCardsBasket.length == 0) {
-            //                     isEmptyBasketTextContent.innerHTML = 'В данный момент корзина пуста...';
-            //                     isTotalSumm.style.visibility = 'hidden';
-            //                 }
-            //                 setCountBasketProduct(arrCardsBasket.length);
-            //                 var listPriceBasket = document.getElementsByClassName('priceBasket');
-            //                 var imgList = document.getElementsByClassName('pictureBasketCard');
-            //                 tempPrice = 0;
-            //                 for (const itTotal of listPriceBasket) {
-            //                     console.log(itTotal);
-            //                     tempPrice = tempPrice + parseInt(itTotal.value);
-            //                 }
-            //                 setTotalPriceBasket(tempPrice);
-            //             })
-            //             var p = document.createElement('p');
-            //             p.textContent = "Кол-во товара:";
-            //             p.className = "textAmountProduct";
-
-            //             //надпись итоговая сумма появляется
-            //             var isTotalSumm = document.getElementById('isTotalSumm');
-            //             isTotalSumm.style.visibility = 'visible';
-
-            //             basketCard.append(i);
-            //             basketCard.append(p);
-            //             basketCard.append(input);
-            //             basketCard.append(titleBasket);
-            //             basketCard.append(pictureBasket);
-            //             basketCard.append(priceBasket);
-            //             basketDiv.append(basketCard);
-
-
-            //             setCountBasketProduct(arrCardsBasket.length);
-            //             var listPriceBasket = document.getElementsByClassName('priceBasket');
-            //             var imgList = document.getElementsByClassName('pictureBasketCard');
-            //             tempPrice = 0;
-            //             for (const itTotal of listPriceBasket) {
-            //                 console.log(itTotal);
-            //                 tempPrice = tempPrice + parseInt(itTotal.value);
-            //             }
-            //             setTotalPriceBasket(tempPrice);
-            //             input.addEventListener('change', () => {
-            //                 tempPrice = 0;
-            //                 for (let i = 0; i < arrCardsBasket.length; i++) {
-            //                     if (input.id == listPriceBasket[i].id) {
-            //                         listPriceBasket[i].innerHTML = `<span>Цена: </span> ${imgList[i].id * input.value} <span> грн.</span>`;
-            //                         listPriceBasket[i].value = imgList[i].id * input.value;
-            //                     }
-            //                     tempPrice = tempPrice + parseInt(listPriceBasket[i].value);
-            //                 }
-            //                 setTotalPriceBasket(tempPrice);
-            //             });
-
-
-
-            //             var listBuyButton = document.getElementsByClassName('btnBuy');
-            //             for (const btn of listBuyButton) {
-            //                 if (btn.id == iter['id']) {
-            //                     btn.disabled = true;
-            //                     btn.setAttribute('class', 'btnEnabled');
-            //                 }
-            //             }
-            //         })
-            //         card.append(picture);
-            //         card.append(title);
-            //         card.append(price);
-            //         card.append(buy);
-            //         cardsDiv.append(card);
-            //     }
+        }).then(res=>{
+            setCurrentPosts(res['data']['value']);
+            // for (const iterator of res['data']['value']) {
+            //     // posts.push(iterator);
             // }
+            //console.log(posts);
         });
+        // .then( allproduct => {
+        //     //если enabled!!!!
+        //     console.log(allproduct);
+        //     setPosts(allproduct['data']['value']);
+        //     // setPosts(allproduct['data']['value']);
+        //     //setLoading(false);
+           
+        // });
+       
+                                            
+        //popular
         if (popProduct === false) {
             setPopProduct(true);
             //
@@ -419,7 +298,7 @@ function Main() {
                 menuDiv[0].append(nav);
             }
         });
-    })
+    },[]);
     return (
         <div>
             <div className="containerС">
@@ -436,7 +315,7 @@ function Main() {
                     <i className="fa fa-search" id='searchIconID' aria-hidden="true" onClick={()=>{
                         axios({
                             method:'get',
-                            url:`https://shop20230228183528.azurewebsites.net/api/ControllerClass/SearchProduct?text=${document.getElementsByClassName('searchInput')[0].value}`,
+                            url:`https://marketuser.azurewebsites.net/api/ControllerClass/SearchProduct?text=${document.getElementsByClassName('searchInput')[0].value}`,
                             dataType: "dataType",
                             headers: {
                                 'Accept': '*/*',
@@ -450,25 +329,38 @@ function Main() {
                                 alert('Ничего не найдено :(');
                             }
                             else{
-                                var cardsDiv = document.getElementById('cardsDiv');
-                                cardsDiv.innerHTML='';
-                                cardsDiv.scrollIntoView({block: "center", inline: "center"});
-                                for (const iter of product['data']['value']) {
-                                    if (iter['status'] === 'Enabled') {
-                                        var card = document.createElement('div');
-                                        card.className = "cards";
-                                        var title = document.createElement('h2');
-                                        title.textContent = iter['title'] + ' ' + iter['model'];
-                                        title.className = "titleProduct";
-                                        var picture = document.createElement('img');
-                                        picture.src = iter['uriPhoto'];
-                                        picture.className = "pictureCard";
-                                        var price = document.createElement('h3');
-                                        price.textContent = iter['price'] + ' грн.';
-                                        var buy = document.createElement('button');
-                                        buy.textContent = "BUY";
-                                        buy.className = "btnBuy";
-                                        buy.id = iter['id'];
+                                // var place = document.getElementById('cardsDiv');
+                                // place.innerHTML='';
+
+
+
+                                // setPosts([]);
+                                setCurrentPage(1);
+                                setCurrentPosts(product['data']['value']);
+
+
+
+                                // setLoading(false);
+                                //console.log(posts);
+                                // var cardsDiv = document.getElementById('cardsDiv');
+                                // cardsDiv.innerHTML='';
+                                // cardsDiv.scrollIntoView({block: "center", inline: "center"});
+                                // for (const iter of product['data']['value']) {
+                                //     if (iter['status'] === 'Enabled') {
+                                //         var card = document.createElement('div');
+                                //         card.className = "cards";
+                                //         var title = document.createElement('h2');
+                                //         title.textContent = iter['title'] + ' ' + iter['model'];
+                                //         title.className = "titleProduct";
+                                //         var picture = document.createElement('img');
+                                //         picture.src = iter['uriPhoto'];
+                                //         picture.className = "pictureCard";
+                                //         var price = document.createElement('h3');
+                                //         price.textContent = iter['price'] + ' грн.';
+                                //         var buy = document.createElement('button');
+                                //         buy.textContent = "BUY";
+                                //         buy.className = "btnBuy";
+                                //         buy.id = iter['id'];
                                         //логика покупки при поиске
                                         // buy.addEventListener('click',()=>{
                                         //     // setCountBasketProduct(countBasketProduct + 1);
@@ -552,13 +444,13 @@ function Main() {
                                         //         }
                                         //     }
                                         // })
-                                        card.append(picture);
-                                        card.append(title);
-                                        card.append(price);
-                                        card.append(buy);
-                                        cardsDiv.append(card);
-                                    }
-                                }
+                                        // card.append(picture);
+                                        // card.append(title);
+                                        // card.append(price);
+                                        // card.append(buy);
+                                        // cardsDiv.append(card);
+                                    //}
+                               // }
                             }
                         });
                     }}></i>
@@ -678,10 +570,10 @@ function Main() {
                     }}>OK</button>
                 </div>
                 {/* <div id='cardsDiv'></div> */}
-                <Post loading={loading} posts={currentPosts}></Post>
+                <Post loading={loading} posts={currentPosts.slice(indexOfFirstPost,indexOfLastPost)}></Post>
             </div>
             <div id='paginator'>
-            <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}></Pagination>
+            <Pagination postsPerPage={postsPerPage} totalPosts={currentPosts.length} paginate={paginate}></Pagination>
             </div>
             <footer className='footer'>
                 <div style={{ display: 'flex' }}>

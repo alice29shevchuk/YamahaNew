@@ -1,22 +1,23 @@
 import { Modal } from "bootstrap";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Scroll from 'react-scroll';
 import './Main.css';
 const Post = ({loading,posts}) => {
     let scroll = Scroll.animateScroll;
     const[totalPriceBasket,setTotalPriceBasket] = useState(0);
     const [countBasketProduct,setCountBasketProduct] = useState(0);
+    const [localPost,setLocalPost] = useState([]);
     var tempPrice = 0;
-    if (loading) {
-        return <h2>Loading...</h2>
-    }
+    // if (loading) {
+    //     return <h2>Loading...</h2>
+    // }
     return <div id="cardsDiv">
         {posts.map(post => (
-            <div className="cards">
-                <h2 key={post.title} className="titleProduct">{post.title} {post.model}
-                    <img key={post.uriPhoto} className="pictureCard" src={post.uriPhoto}></img>
-                    <h4 key={post.price} className="titleProduct">Цена: {post.price} грн.</h4>
-                    <button key={post.id} className="btnBuy" onClick={()=>{
+            <div className="cards" key={post.id}>
+                <h2 className="titleProduct">{post.title} {post.model}
+                    <img  className="pictureCard" src={post.uriPhoto}></img>
+                    <p  className="titleProduct">Цена: {post.price} грн.</p>
+                    <button  className="btnBuy" onClick={()=>{
                         // var IStoken = sessionStorage.getItem("token");
                         // if (IStoken == null) {
                         //     window.location.href = '/authorization';
