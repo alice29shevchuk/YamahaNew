@@ -15,9 +15,9 @@ const Post = ({loading,posts}) => {
         {posts.map(post => (
             <div className="cards" key={post.id}>
                 <h2 className="titleProduct">{post.title} {post.model}
-                    <img  className="pictureCard" src={post.uriPhoto}></img>
-                    <p  className="titleProduct">Цена: {post.price} грн.</p>
-                    <button  className="btnBuy" onClick={()=>{
+                    <img className="pictureCard" src={post.uriPhoto}></img>
+                    <p className="priceProduct">Цена: {post.price} грн.</p>
+                    <button className="btnBuy" onClick={()=>{
                         // var IStoken = sessionStorage.getItem("token");
                         // if (IStoken == null) {
                         //     window.location.href = '/authorization';
@@ -52,28 +52,36 @@ const Post = ({loading,posts}) => {
                             priceBasket.value = post.price;
                             priceBasket.className = "priceBasket";
                             priceBasket.id = post.id;
+                            var butAllBasket = document.getElementById('btnBuyBasket');
+                            butAllBasket.style.visibility = "visible";
                             var i = document.createElement('i');
                             i.className = "fa fa-trash";
                             i.id = "trashIcon";
-                            //click
+                            //click by Trash Icon
                             i.addEventListener('click', () => {
-                                alert('del');
-                                console.log(basketCard.id);
-                                basketDiv.removeChild(basketCard);
-                                if (arrCardsBasket.length == 0) {
-                                    isEmptyBasketTextContent.innerHTML = 'В данный момент корзина пуста...';
-                                    isTotalSumm.style.visibility = 'hidden';
+                                const resultDel = window.confirm('Вы действительно хотите удалить товар?');
+                                if(resultDel)
+                                {
+                                    console.log(basketCard.id);
+                                    basketDiv.removeChild(basketCard);
+                                    if (arrCardsBasket.length == 0) {
+                                        isEmptyBasketTextContent.innerHTML = 'В данный момент корзина пуста...';
+                                        isTotalSumm.style.visibility = 'hidden';
+                                    }
+                                    x.setAttribute('data-count',arrCardsBasket.length);
+                                    var listPriceBasket = document.getElementsByClassName('priceBasket');
+                                    var imgList = document.getElementsByClassName('pictureBasketCard');
+                                    tempPrice = 0;
+                                    for (const itTotal of listPriceBasket) {
+                                        console.log(itTotal);
+                                        tempPrice = tempPrice + parseInt(itTotal.value);
+                                    }
+                                    isTotalSumm.textContent = 'Цена: '+ tempPrice + ' грн.';
+                                    if(arrCardsBasket.length==0)
+                                    {
+                                        butAllBasket.style.visibility = "hidden";
+                                    }
                                 }
-                                x.setAttribute('data-count',arrCardsBasket.length);
-                                var listPriceBasket = document.getElementsByClassName('priceBasket');
-                                var imgList = document.getElementsByClassName('pictureBasketCard');
-                                tempPrice = 0;
-                                for (const itTotal of listPriceBasket) {
-                                    console.log(itTotal);
-                                    tempPrice = tempPrice + parseInt(itTotal.value);
-                                }
-                                isTotalSumm.textContent = 'Цена: '+ tempPrice + ' грн.';
-                                // setTotalPriceBasket(tempPrice);
                             })
                             var p = document.createElement('p');
                             p.textContent = "Кол-во товара:";
@@ -83,6 +91,7 @@ const Post = ({loading,posts}) => {
                             var isTotalSumm = document.getElementById('isTotalSumm');
                             isTotalSumm.style.visibility = 'visible';
 
+
                             basketCard.append(i);
                             basketCard.append(p);
                             basketCard.append(input);
@@ -90,7 +99,6 @@ const Post = ({loading,posts}) => {
                             basketCard.append(pictureBasket);
                             basketCard.append(priceBasket);
                             basketDiv.append(basketCard);
-
 
                             
                             x.setAttribute('data-count',arrCardsBasket.length);
@@ -104,7 +112,7 @@ const Post = ({loading,posts}) => {
                             console.log('temp',tempPrice);
                         }
                         setTotalPriceBasket(tempPrice);
-                        isTotalSumm.textContent = 'Цена: '+ tempPrice + ' грн.';
+                        isTotalSumm.textContent = 'Итого: '+ tempPrice + ' грн.';
                         input.addEventListener('change', () => {
                             tempPrice = 0;
                             for (let i = 0; i < arrCardsBasket.length; i++) {
@@ -115,10 +123,9 @@ const Post = ({loading,posts}) => {
                                 tempPrice = tempPrice + parseInt(listPriceBasket[i].value);
                             }
                             setTotalPriceBasket(tempPrice);
-                            isTotalSumm.textContent = 'Цена: '+ tempPrice + ' грн.';
+                            isTotalSumm.textContent = 'Итого: '+ tempPrice + ' грн.';
                             console.log(totalPriceBasket);
                         });
-
                     }}>BUY</button>
                 </h2>
             </div>

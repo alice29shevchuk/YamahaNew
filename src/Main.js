@@ -311,6 +311,7 @@ function Main() {
                         <h4 style={{marginLeft:"11px"}} id='isEmptyBasket'>В данный момент корзина пуста...</h4>
                         <div id='basketCardsDiv'></div>
                         <h3 id='isTotalSumm'>Итого: {totalPriceBasket} грн.</h3>
+                        <button id='btnBuyBasket'>BUY</button>
                     </Modal>
                     <i className="fa fa-search" id='searchIconID' aria-hidden="true" onClick={()=>{
                         axios({
@@ -329,12 +330,8 @@ function Main() {
                                 alert('Ничего не найдено :(');
                             }
                             else{
-                                // var place = document.getElementById('cardsDiv');
-                                // place.innerHTML='';
 
-
-
-                                // setPosts([]);
+                                document.getElementById('cardsDiv').scrollIntoView({block: "center", inline: "center"});
                                 setCurrentPage(1);
                                 setCurrentPosts(product['data']['value']);
 
